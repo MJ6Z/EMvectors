@@ -3,11 +3,7 @@
 
 ## Mathematics
 I'm Using the Lorentz equation for my simulation.
-$$
-\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})
-$$
+$$\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})$$
 
 Which I've reduced to:
-$$
-m \frac{d\mathbf{v}}{dt} = q(\mathbf{v} \times \mathbf{B})
-$$
+$$m \frac{d\mathbf{v}}{dt} = q(\mathbf{v} \times \mathbf{B})$$
