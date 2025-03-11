@@ -10,8 +10,8 @@ else()
   message(ERROR "Operating system not supported: " ${CMAKE_SYSTEM})
 endif()
 
-# morphologica uses c++-17 language features
-set(CMAKE_CXX_STANDARD 17)
+# morphologica uses c++-20 language features
+set(CMAKE_CXX_STANDARD 20)
 # Add the host definition to CXXFLAGS along with other switches, depending on OS/Compiler
 if (APPLE)
   set(CMAKE_CXX_FLAGS "${OS_FLAG} -Wall -Wfatal-errors -g -O3")
@@ -61,4 +61,3 @@ add_executable(model tracks.cpp)
 set(MORPH_LIBS_CORE ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${HDF5_C_LIBRARIES})
 set(MORPH_LIBS_GL OpenGL::GL Freetype::Freetype glfw)
 target_link_libraries(model ${MORPH_LIBS_CORE} ${MORPH_LIBS_GL})
-
