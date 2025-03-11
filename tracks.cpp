@@ -18,9 +18,8 @@ constexpr double mass_e = 9.1093837e-31; //(Invarient/restElectron mass (cannot 
 int main(){
 
     //Visual model setup
-    morph::Visual v(1024, 768, "morph::QuiverVisual", {0.8,-0.8}, {.05,.05,.05}, 2.0f, 0.01f);
+    morph::Visual v(1024, 768, "morph::QuiverVisual");
     morph::vec<float, 3> offset = { 0.0, 0.0, 0.0 };
-    v.zNear = 0.001;
     v.showCoordArrows = true;
     v.showTitle = true;
     v.backgroundBlack();
@@ -35,7 +34,7 @@ int main(){
     float rx=0.0;
     float ry=0.0;
     float rz=0.0;
-    morph::vec<float, 3> v = {10,0,0};
+    morph::vec<float, 3> _v = {10,0,0};
 
     //iterator.
     size_t a = 0;
