@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "calc.h"
 
 constexpr double pi = 3.14159265359; //pi
 constexpr double C = 299792458.0; // Speed of light in meters per second (m/s)
@@ -36,6 +37,7 @@ int main(){
     std::vector<morph::vec<float, 3>> B(size*size*size); //Magnetic field.
     std::vector<morph::vec<float, 3>> E(size*size*size);
     std::vector<morph::vec<float, 3>> coords(size*size*size);
+    morph::vec<int, 3> point= {0,0,0};
 /*
     morph::vec<float, 3> r = {0,0,0};
     morph::vec<float, 3> drdt = {0,0,0};
@@ -48,25 +50,13 @@ int main(){
         for (int j = -halfsize; j < halfsize; ++j) {
             for (int k = -halfsize; k < halfsize; ++k) {
 
-                float x = 0.1*i-0.5;
+                float x = 0.1*i;
                 float y = 0.1*j;
                 float z = 0.1*k;
 
-                //distance from 0,0,0
-                float d = std::sqrt(x*x + y*y + z*z);
-
-                //unit vector calculations
-                float xhat = x/std::abs(x);
-                float yhat = y/std::abs(y);
-                float zhat = z/std::abs(z);
-
-                if(i == 5){xhat = 0;}
-                if(j == 0){yhat = 0;}
-                if(k == 0){zhat = 0;}
-
 
                 coords[a]={x,y,z};
-                B[a]={xhat*(1/d),yhat*(1/d),zhat*(1/d)}; // field on {x,y,z}, currently simulating a single point charge on {0,0,0}
+                B[a] = pointcharge(i,j,k, point);
 
 
                 a++;
