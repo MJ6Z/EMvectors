@@ -11,12 +11,11 @@ constexpr double C = 299792458.0; // Speed of light in meters per second (m/s)
 constexpr double q_e = -1.602176634e-19; // Electron charge in coulombs (C)
 constexpr double mass_e = 9.1093837e-31; //(Invarient/rest Electron mass (cannot name variable m_e.)
 constexpr double epsilon_zero = 8.8541878188e-12; //Permitivity of free space.
-constexpr double electric_coeff = 8.98755179e9; //1/(4*pi*e_0)
+constexpr double k = 8.98755179e9; //1/(4*pi*e_0)
 
 class electroStatics {
 
 public:
-
     morph::vec<float,3> pointcharge(int i, int j, int k, float q, morph::vec<int, 3> point)
     {
         float x = 0.1*(i-point[0]); //let the centre of x,y,z be the point.
