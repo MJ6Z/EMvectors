@@ -7,3 +7,8 @@ $$\mathbf{F} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B})$$
 
 Which stated explicitly gives:
 $$\mathnormal{\overline{\boldsymbol{F}}\left(\overline{r}( t) ,\dot{\overline{r}}( t) ,t,q\right)} =q\left[\overline{\boldsymbol{E}}(\overline{r} ,t) +\dot{\overline{r}}( t) \times \overline{\boldsymbol{B}}(\overline{r} ,t)\right]$$
+
+## Current state
+At the moment, the code shows the electric potential around a number of point charges, with positions {x,y,z} and magnitude q. See pointcharge() in [calculation.h](calculation.h)
+
+Points can be defined in a json file, with [params.json](params.json) and [onepoint.json](onepoint.json) as example files.

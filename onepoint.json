@@ -1,0 +1,11 @@
+{
+    "info":"size of vector grid",
+    "size":16,
+
+    "scheme":"{{x,y,z},q} repeating",
+    "pointchargex":[0],
+    "pointchargey":[0],
+    "pointchargez":[0],
+    "pointchargeq":[1]
+
+}

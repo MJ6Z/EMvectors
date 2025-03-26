@@ -2,18 +2,55 @@
     Simulate particle tracks using morph::quiverVisual
 */
 
-#include <morph/Visual.h>
-#include <morph/ColourMap.h>
-#include <morph/QuiverVisual.h>
-#include <morph/vec.h>
+//standard library includes.
 #include <iostream>
 #include <array>
 #include <stdexcept>
 #include <string>
 
+//morphologica includes.
+#include <morph/Visual.h>
+#include <morph/ColourMap.h>
+#include <morph/QuiverVisual.h>
+#include <morph/vec.h>
+
+#include <morph/tools.h>
+#include <morph/Config.h> //json read-writer
+
+// calculation header file.
 #include "calculation.h"
 
-int main(){
+
+int main(int argc, char **argv){
+
+    //throw error if user does not supply JSON file.
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " /path/to/params.json" << std::endl;
+        return 1;
+    }
+    std::string paramsfile (argv[1]);
+
+    //Set up morph::Config JSON reader/writer for reading the parameters
+    //Return error if this fails.
+    morph::Config conf(paramsfile);
+    if (!conf.ready) {
+        return 1;
+    }
+
+    //get position and magnitude data about point charges from params.json
+    morph::vvec<int> point_xcoord = conf.getvvec<int>("pointchargex");
+    morph::vvec<int> point_ycoord = conf.getvvec<int>("pointchargey");
+    morph::vvec<int> point_zcoord = conf.getvvec<int>("pointchargez");
+    morph::vvec<int> point_q = conf.getvvec<int>("pointchargeq");
+
+    //check there are no incomplete coordinates.
+    if( point_xcoord.size() != point_ycoord.size() &&
+        point_ycoord.size() != point_zcoord.size() &&
+        point_zcoord.size() != point_q.size()){
+        std::cerr<<"Ensure point positions & magnitudes are complete in paramsfile" <<std::endl;
+        return 1;
+    }
+
 
     //Visual model setup
     morph::Visual v(1024, 768, "E.P around point charge(s)");
@@ -24,7 +61,7 @@ int main(){
     v.lightingEffects();
 
     //size of the grid of quivers
-    int size = 14;
+    int size = conf.getInt("size",10);
     int halfsize = size/2;
 
 
@@ -32,14 +69,8 @@ int main(){
 
 
 
-    std::vector<morph::vec<float, 3>> B(size*size*size); //Magnetic field.
     std::vector<morph::vec<float, 3>> E(size*size*size); //Electric field.
     std::vector<morph::vec<float, 3>> coords(size*size*size);
-
-    morph::vec<int, 3> point1= {0,0,0};
-    float q1 = 1;
-    morph::vec<int, 3> point2= {4,0,0};
-    float q2 = 1;
 
 
 //instantiate electroStatics class as object "particle" for making calculations.
@@ -56,11 +87,13 @@ electroStatics particle;
                 float y = 0.1*j;
                 float z = 0.1*k;
 
-                morph::vec<float, 3> val = particle.pointcharge(i,j,k, q1, point1);
-                val = val + particle.pointcharge(i,j,k, q2, point2);
+                morph::vec<float, 3> val = {0,0,0};
+                for(int l = 0; l < point_xcoord.size(); ++l){
+                    val = val + particle.pointcharge(i,j,k,point_q[l],{point_xcoord[l],point_ycoord[l],point_zcoord[l],});
+                }
 
                 coords[a]={x,y,z};
-                B[a] = val;
+                E[a] = val;
 
 
                 a++;
@@ -70,7 +103,7 @@ electroStatics particle;
 
 
     //Add the B field to the visualization.
-    auto vmp = std::make_unique<morph::QuiverVisual<float>>(&coords, offset, &B, morph::ColourMapType::MonochromeRed); //coordinates of the arrows, offset, arrows.
+    auto vmp = std::make_unique<morph::QuiverVisual<float>>(&coords, offset, &E, morph::ColourMapType::MonochromeRed); //coordinates of the arrows, offset, arrows.
     v.bindmodel (vmp);
     vmp->quiver_length_gain = 0.2f;
     vmp->quiver_thickness_gain = 0.02f;
