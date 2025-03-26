@@ -11,19 +11,12 @@
 #include <stdexcept>
 #include <string>
 
-#include "calc.h"
-
-constexpr double pi = 3.14159265359; //pi
-constexpr double C = 299792458.0; // Speed of light in meters per second (m/s)
-constexpr double q_e = -1.602176634e-19; // Electron charge in coulombs (C)
-constexpr double mass_e = 9.1093837e-31; //(Invarient/rest Electron mass (cannot name variable m_e.)
-constexpr double epsilon_zero = 8.8541878188e-12; //Permitivity of free space.
-constexpr double electric_coeff = 8.98755179e9; //1/(4*pi*e_0)
+#include "calculation.h"
 
 int main(){
 
     //Visual model setup
-    morph::Visual v(1024, 768, "morph::QuiverVisual");
+    morph::Visual v(1024, 768, "E.P around point charge(s)");
     morph::vec<float, 3> offset = { 0.0, 0.0, 0.0 };
     v.showCoordArrows = true;
     v.showTitle = true;
@@ -31,21 +24,30 @@ int main(){
     v.lightingEffects();
 
     //size of the grid of quivers
-    int size = 20;
+    int size = 14;
     int halfsize = size/2;
 
+
+    //All of this will be moved into the electroStatics clas im just lazy as fuck.
+
+
+
     std::vector<morph::vec<float, 3>> B(size*size*size); //Magnetic field.
-    std::vector<morph::vec<float, 3>> E(size*size*size);
+    std::vector<morph::vec<float, 3>> E(size*size*size); //Electric field.
     std::vector<morph::vec<float, 3>> coords(size*size*size);
-    morph::vec<int, 3> point= {0,0,0};
-/*
-    morph::vec<float, 3> r = {0,0,0};
-    morph::vec<float, 3> drdt = {0,0,0};
-    morph::vec<float, 3> d2rdt2 = {0,0,0};
-*/
+
+    morph::vec<int, 3> point1= {0,0,0};
+    float q1 = 1;
+    morph::vec<int, 3> point2= {4,0,0};
+    float q2 = 1;
+
+
+//instantiate electroStatics class as object "particle" for making calculations.
+electroStatics particle;
 
     //iterator.
     size_t a = 0;
+
     for (int i = -halfsize; i < halfsize; ++i) {
         for (int j = -halfsize; j < halfsize; ++j) {
             for (int k = -halfsize; k < halfsize; ++k) {
@@ -54,9 +56,11 @@ int main(){
                 float y = 0.1*j;
                 float z = 0.1*k;
 
+                morph::vec<float, 3> val = particle.pointcharge(i,j,k, q1, point1);
+                val = val + particle.pointcharge(i,j,k, q2, point2);
 
                 coords[a]={x,y,z};
-                B[a] = pointcharge(i,j,k, point);
+                B[a] = val;
 
 
                 a++;
