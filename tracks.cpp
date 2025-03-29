@@ -69,8 +69,8 @@ int main(int argc, char **argv){
 
 
 
-    std::vector<morph::vec<float, 3>> E(size*size*size); //Electric field.
-    std::vector<morph::vec<float, 3>> coords(size*size*size);
+    morph::vvec<morph::vec<float, 3>> E(size*size*size); //electric potential.
+    morph::vvec<morph::vec<float, 3>> coords(size*size*size);
 
 
 //instantiate electroStatics class as object "particle" for making calculations.
@@ -87,35 +87,26 @@ electroStatics particle;
                 float y = 0.1*j;
                 float z = 0.1*k;
 
-                morph::vec<float, 3> val = {0,0,0};
-                for(int l = 0; l < point_xcoord.size(); ++l){
-                    val = val + particle.pointcharge(i,j,k,point_q[l],{point_xcoord[l],point_ycoord[l],point_zcoord[l],});
-                }
-
                 coords[a]={x,y,z};
-                E[a] = val;
-
-
                 a++;
             }
         }
     }
 
+    for(unsigned int i = 0; i < point_xcoord.size();++i){
+        E += particle.pointCharge(size,point_q[i],{point_xcoord[i],point_ycoord[i],point_zcoord[i],});}
 
     //Add the B field to the visualization.
     auto vmp = std::make_unique<morph::QuiverVisual<float>>(&coords, offset, &E, morph::ColourMapType::MonochromeRed); //coordinates of the arrows, offset, arrows.
     v.bindmodel (vmp);
-    vmp->quiver_length_gain = 0.2f;
-    vmp->quiver_thickness_gain = 0.02f;
+    vmp->quiver_length_gain = 0.1f;
+    vmp->quiver_thickness_gain = 0.2f;
     vmp->shapesides = 12;
 
     vmp->finalize();
     v.addVisualModel (vmp);
 
     v.keepOpen();
-
-
-
 
     return 0;
 }

@@ -11,6 +11,6 @@ $$\mathnormal{\overline{\boldsymbol{F}}\left(\overline{r}( t) ,\dot{\overline{r}
 
 ## Current state
 At the moment, the code shows the electric potential around a number of point charges, with positions $${x,y,z}$$ and magnitude $$q$$. See pointcharge() in [calculation.h](calculation.h). The electric potential is defined to be
-$$V=kq/r$$
+$$\overline(V)=k\frac{q}{\overline(r)}$$
 
 Points (as well as the size of the grid) can be defined in a json file, with [params.json](params.json) and [onepoint.json](onepoint.json) as example files.
