@@ -56,7 +56,7 @@ set(MORPH_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/morphologica" CACHE PATH "The path
 include_directories(BEFORE ${MORPH_INCLUDE_PATH}/include) # Allows GL3/gl3.h to be found
 include_directories(BEFORE ${MORPH_INCLUDE_PATH})         # Allows morph/Header.h to be found
 
-add_executable(model tracks.cpp)
+add_executable(model main.cpp)
 
 set(MORPH_LIBS_CORE ${ARMADILLO_LIBRARY} ${ARMADILLO_LIBRARIES} ${HDF5_C_LIBRARIES})
 set(MORPH_LIBS_GL OpenGL::GL Freetype::Freetype glfw)

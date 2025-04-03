@@ -13,7 +13,6 @@
 #include <morph/ColourMap.h>
 #include <morph/QuiverVisual.h>
 #include <morph/vec.h>
-
 #include <morph/tools.h>
 #include <morph/Config.h> //json read-writer
 
@@ -53,12 +52,12 @@ int main(int argc, char **argv){
 
 
     //Visual model setup
-    morph::Visual v(1024, 768, "E.P around point charge(s)");
+    morph::Visual vis(1024, 768, "E.P around point charge(s)");
     morph::vec<float, 3> offset = { 0.0, 0.0, 0.0 };
-    v.showCoordArrows = true;
-    v.showTitle = true;
-    v.backgroundBlack();
-    v.lightingEffects();
+    vis.showCoordArrows = true;
+    vis.showTitle = true;
+    vis.backgroundBlack();
+    vis.lightingEffects();
 
     //size of the grid of quivers
     int size = conf.getInt("size",10);
@@ -69,7 +68,7 @@ int main(int argc, char **argv){
 
 
 
-    morph::vvec<morph::vec<float, 3>> E(size*size*size); //electric potential.
+    morph::vvec<morph::vec<float, 3>> V(size*size*size); //electric potential.
     morph::vvec<morph::vec<float, 3>> coords(size*size*size);
 
 
@@ -87,26 +86,28 @@ electroStatics particle;
                 float y = 0.1*j;
                 float z = 0.1*k;
 
-                coords[a]={x,y,z};
-                a++;
+                coords[a++]={x,y,z};
             }
         }
     }
 
-    for(unsigned int i = 0; i < point_xcoord.size();++i){
-        E += particle.pointCharge(size,point_q[i],{point_xcoord[i],point_ycoord[i],point_zcoord[i],});}
+    for(unsigned int i = 0; i < point_xcoord.size();++i){V += particle.pointCharge(size,point_q[i],{point_xcoord[i],point_ycoord[i],point_zcoord[i],});}
+
+    std::cout<<"Magnitude of potential: \n";
+    std::cout<<V.range()<<std::endl;
+
 
     //Add the B field to the visualization.
-    auto vmp = std::make_unique<morph::QuiverVisual<float>>(&coords, offset, &E, morph::ColourMapType::MonochromeRed); //coordinates of the arrows, offset, arrows.
-    v.bindmodel (vmp);
-    vmp->quiver_length_gain = 0.1f;
-    vmp->quiver_thickness_gain = 0.2f;
+    auto vmp = std::make_unique<morph::QuiverVisual<float>>(&coords, offset, &V, morph::ColourMapType::MonochromeRed); //coordinates of the arrows, offset, arrows.
+    vis.bindmodel (vmp);
+    vmp->quiver_length_gain = conf.getFloat("quiver_length",0.1f);
+    vmp->quiver_thickness_gain = conf.getFloat("quiver_thickness",0.02f);
     vmp->shapesides = 12;
 
     vmp->finalize();
-    v.addVisualModel (vmp);
+    vis.addVisualModel (vmp);
 
-    v.keepOpen();
+    vis.keepOpen();
 
     return 0;
 }

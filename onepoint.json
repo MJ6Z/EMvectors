@@ -2,6 +2,10 @@
     "info":"size of vector grid",
     "size":16,
 
+    "quiver_info":"visualization parameters to do with quivers.",
+    "quiver_length": 0.2,
+    "quiver_thickness": 0.025,
+
     "scheme":"{{x,y,z},q} repeating",
     "pointchargex":[0],
     "pointchargey":[0],
