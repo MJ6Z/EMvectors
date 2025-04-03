@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(trackdiagramvisuals)
+project(EMvectors)
 
 set(CMAKE_CXX_STANDARD 17)
 # From CMAKE_SYSTEM work out which of __OSX__, __GLN__, __NIX__ are required
