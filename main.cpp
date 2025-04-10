@@ -54,8 +54,8 @@ int main(int argc, char **argv){
     //Visual model setup
     morph::Visual vis(1024, 768, "E.P around point charge(s)");
     morph::vec<float, 3> offset = { 0.0, 0.0, 0.0 };
-    vis.showCoordArrows = true;
-    vis.showTitle = true;
+    vis.showCoordArrows (true);
+    vis.showTitle (true);
     vis.backgroundBlack();
     vis.lightingEffects();
 
