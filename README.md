@@ -2,7 +2,7 @@
 [morphologica](https://github.com/ABRG-Models/morphologica) must be installed in-tree with the code.
 
 ## Current state
-![One point visualization](https://github.com/MJ6Z/EMvectors/screenshots/onepoint.png)
+![One point visualization](https://github.com/MJ6Z/EMvectors/blob/main/screenshots/onepoint.png)
 
 At the moment, the code shows the electric potential around a number of point charges, with positions $${x,y,z}$$ and magnitude $$q$$. See pointcharge() in [calculation.h](calculation.h).
 
